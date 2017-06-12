@@ -64,7 +64,7 @@ GetFusionz_and_namez <- function(sample, suffix) {
   JSON <- fromJSON(JSON_file, flatten = TRUE)
   cat("Extracting gene dataframe\n")
   JSON_level1 <- JSON$genes
-  output <- JSON_level1[idx,]
+  output <- JSON_level1
 
   # Drop weird cols
   output <- output[,c(-3,-4)]
