@@ -36,6 +36,11 @@ Ids <- gsub("_fusion_GRCh38.json", "", JSON_files)
 # This function will flatten out the JSON giving you a list of gene A and gene
 # B sorted by splitcount then paircount
 GetFusionz <- function(sample, suffix) {
+
+  # To test
+  #sample <- Ids[1]
+  #suffix = "_fusion_GRCh38.json"
+
   JSON_file <- paste0(sample, suffix)
   cat(paste("### Working on sample:", sample, "input file:", JSON_file, "###", "\n"))
   cat("Reading JSON..\n")
@@ -58,6 +63,11 @@ GetFusionz <- function(sample, suffix) {
 # sorted by splitcount then paircount, it will also get co-ordinates for each
 # gene, and if on same chr caculate distance between the two
 GetFusionz_and_namez <- function(sample, suffix) {
+
+  # To test
+  #sample <- Ids[1]
+  #suffix = "_fusion_GRCh38.json"
+
   JSON_file <- paste0(sample, suffix)
   cat(paste("### Working on sample:", sample, "input file:", JSON_file, "###", "\n"))
   cat("Reading JSON..\n")
@@ -132,8 +142,6 @@ GetFusionz_and_namez <- function(sample, suffix) {
   #GetDistance(476, output)
   #GetDistance(5916, output)
 
-  # Add identical index
-  output <- rbind(output, identical_idx)
   # Get distances
   cat("Computing gene distances\n")
   geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
