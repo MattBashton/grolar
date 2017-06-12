@@ -149,7 +149,7 @@ GetFusionz_and_namez <- function(sample, suffix) {
 
   # Sort
   cat("Sorting by number of events\n")
-  idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
+  idx <- order(output$splitcount, output$paircount, decreasing = TRUE)
   output <- output[idx,]
 
   # Write out output
