@@ -150,7 +150,7 @@ GetFusionz_and_namez <- function(sample, suffix) {
   # Sort
   cat("Sorting by number of events\n")
   idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
-  output[idx,]
+  output <- output[idx,]
 
   # Write out output
   cat(paste0("Writing out table: ", sample, "_fusions_filt_sorted.txt", "\n"))
