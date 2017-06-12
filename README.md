@@ -25,4 +25,4 @@ Each of these lists can then be run with GNU parallel like so:
 parallel --progress --jobs 12 --joblog kallisto_joblog.txt < kallisto_jobs
 ```
 
-The above example would set of a maximum of 12 jobs simultaneously sourced from `kallisto_jobs` writing log info to the `kallisto_joblog.txt` file.  Note that defaults such as command-line arguments and `.gft` and `index files` need to be set by editing the two shell scripts.  Full documentation for GNU parallel can be found [here](https://www.gnu.org/software/parallel/man.html).
+The above example would set of a maximum of 12 jobs simultaneously sourced from `kallisto_jobs` writing log info to the `kallisto_joblog.txt` file.  Note that defaults such as command-line arguments and `.gft` and `index files` need to be set by editing the two shell scripts.  The `--progress` argument will give the following info on the terminal `Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete`. Full documentation for GNU parallel can be found [here](https://www.gnu.org/software/parallel/man.html).
