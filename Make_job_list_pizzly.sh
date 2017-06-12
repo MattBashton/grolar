@@ -18,7 +18,7 @@ OUTPUT=$2
 
 # Set counter
 COUNT=1
-END=$(wc -l $INPUT_LIST | awk '{print $1}')
+END=$(wc -l $INPUT_LIST | awk '{print $1}' | grep -oP '^\S+')
 
 echo " "
 echo " * Input file is: $INPUT_LIST"
