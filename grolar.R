@@ -1,7 +1,7 @@
 # GROLAR!
 
 # Matthew Bashton 2017
-# Load JSON ouput from pizzly add in gene co-ordinates + compute distance when on same chr
+# Load JSON output from pizzly add in gene co-ordinates + compute distance when on same chr
 
 # CRAN
 #install.packages("jsonlite")
