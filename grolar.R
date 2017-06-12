@@ -15,10 +15,12 @@ biocLite()
 # Change to your own output location
 setwd("~/RNA_Seq/")
 
-# Assuming have used GRCh38 gene models
-library(EnsDb.Hsapiens.v86)
+# CRAN libs
 library(jsonlite)
 library(dplyr)
+
+# Assuming you have used GRCh38 gene models
+library(EnsDb.Hsapiens.v86)
 edb <- EnsDb.Hsapiens.v86
 listColumns(edb)
 supportedFilters(edb)
@@ -27,8 +29,8 @@ supportedFilters(edb)
 # Suffix which apears after sample id in output file name
 suffix <- "_fusion_GRCh38.json"
 
-# Let get a list of all the files we want
-JSON_files <- list.files(path = "~/RNA_Seq/", pattern = "*GRCh38.json")
+# Lets get a list of all the files we want to process
+JSON_files <- list.files(path = "~/RNA_Seq/", pattern = "*_fusion_GRCh38.json")
 
 # Make a list of Ids
 Ids <- gsub("_fusion_GRCh38.json", "", JSON_files)
@@ -48,6 +50,7 @@ GetFusionz <- function(sample, suffix) {
   cat("Extracting gene dataframe\n")
   JSON_level1 <- JSON$genes
   cat("Sorting by number of events\n")
+  # Sort by splitcount then paircount
   idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
   output <- JSON_level1[idx,]
   cat(paste0("Writing out table: ", sample, "_fusions_filt_sorted.txt", "\n"))
@@ -137,17 +140,12 @@ GetFusionz_and_namez <- function(sample, suffix) {
     }
   }
 
-  # Test
-  #GetDistance(22, output)
-  #GetDistance(476, output)
-  #GetDistance(5916, output)
-
   # Get distances
   cat("Computing gene distances\n")
   geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
   output[identical_idx,"gene_distance"] <- geneDistance
 
-  # Sort
+  # Sort by splitcount then paircount
   cat("Sorting by number of events\n")
   idx <- order(output$splitcount, output$paircount, decreasing = TRUE)
   output <- output[idx,]
