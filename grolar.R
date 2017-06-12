@@ -1,5 +1,3 @@
-# GROLAR!
-
 # Matthew Bashton 2017
 # Load JSON output from pizzly add in gene co-ordinates + compute distance when on same chr
 
@@ -66,8 +64,6 @@ GetFusionz_and_namez <- function(sample, suffix) {
   JSON <- fromJSON(JSON_file, flatten = TRUE)
   cat("Extracting gene dataframe\n")
   JSON_level1 <- JSON$genes
-  cat("Sorting by number of events\n")
-  idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
   output <- JSON_level1[idx,]
 
   # Drop weird cols
@@ -142,6 +138,10 @@ GetFusionz_and_namez <- function(sample, suffix) {
   cat("Computing gene distances\n")
   geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
   output[identical_idx,"gene_distance"] <- geneDistance
+
+  # Sort
+  cat("Sorting by number of events\n")
+  idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
 
   # Write out output
   cat(paste0("Writing out table: ", sample, "_fusions_filt_sorted.txt", "\n"))
