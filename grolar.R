@@ -30,10 +30,10 @@ supportedFilters(edb)
 suffix <- "_fusion_GRCh38.json"
 
 # Lets get a list of all the files we want to process
-JSON_files <- list.files(path = "~/RNA_Seq/", pattern = "*_fusion_GRCh38.json")
+JSON_files <- list.files(path = "~/RNA_Seq/", pattern = paste0("*",suffix))
 
 # Make a list of Ids
-Ids <- gsub("_fusion_GRCh38.json", "", JSON_files)
+Ids <- gsub(suffix, "", JSON_files)
 
 # This function will flatten out the JSON giving you a list of gene A and gene
 # B sorted by splitcount then paircount
@@ -50,7 +50,6 @@ GetFusionz <- function(sample, suffix) {
   cat("Extracting gene dataframe\n")
   JSON_level1 <- JSON$genes
   cat("Sorting by number of events\n")
-  # Sort by splitcount then paircount
   idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
   output <- JSON_level1[idx,]
   cat(paste0("Writing out table: ", sample, "_fusions_filt_sorted.txt", "\n"))
@@ -81,6 +80,13 @@ GetFusionz_and_namez <- function(sample, suffix) {
 
   # Drop weird cols
   output <- output[,c(-3,-4)]
+
+  # Add uniq-key
+  output <- cbind(rownames(output), output)
+  tmp <- colnames(output)[-1]
+  colnames(output) <- c("ID", tmp)
+  #colnames(output)
+  #head(output)
 
   # Now extract geneA geneB locations
   # get all geneAs
@@ -113,8 +119,10 @@ GetFusionz_and_namez <- function(sample, suffix) {
   # Check we have the same length
   stopifnot(nrow(tmp1) == nrow(tmp2))
 
-  # Bind these DFs
-  output <- cbind(tmp1, tmp2[,7:10])
+  # Merge these DFs
+  output <- merge(tmp1, tmp2[,c(2,8:11)], by = "ID")[,c(1,3,4,2,5,8,9,10,11,6,7,12,13,14,15)]
+  colnames(output)
+
 
   # Now use mutate
   cat("Finding genes on same chr\n")
@@ -139,6 +147,11 @@ GetFusionz_and_namez <- function(sample, suffix) {
       return(OurRow$geneA.gene_seq_start - OurRow$geneB.gene_seq_end)
     }
   }
+
+  # Test
+  #GetDistance(22, output)
+  #GetDistance(476, output)
+  #GetDistance(5916, output)
 
   # Get distances
   cat("Computing gene distances\n")
