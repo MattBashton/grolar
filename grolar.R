@@ -123,7 +123,6 @@ GetFusionz_and_namez <- function(sample, suffix) {
   output <- merge(tmp1, tmp2[,c(2,8:11)], by = "ID")[,c(1,3,4,2,5,8,9,10,11,6,7,12,13,14,15)]
   colnames(output)
 
-
   # Now use mutate
   cat("Finding genes on same chr\n")
   super_identical <- Vectorize(identical, c("x", "y"))
