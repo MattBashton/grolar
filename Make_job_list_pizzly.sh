@@ -23,7 +23,7 @@ END=$(wc -l $INPUT_LIST | awk '{print $1}' | grep -oP '^\S+')
 echo " "
 echo " * Input file is: $INPUT_LIST"
 echo " * Number of runs: $END"
-echo " * Output for GNU parallel saved to: $OUTPUT"
+echo " * Output job list for GNU parallel saved to: $OUTPUT"
 echo " "
 
 # Main bit of command-line for job
