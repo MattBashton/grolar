@@ -6,7 +6,10 @@
 
 # This run list is then supplied to GNU parallel --jobs
 
-# Needs Pizzly script get_fragment_length.py                                                                                                                                                                                                                                            
+# Note: you'll need to have the get_fragment_length.py and flatten_json.py
+# script from Pizzly in: /usr/local/bin/ for this script to work, you
+# can set it's location below:
+SCRIPT_PATH="/usr/local/bin"
 
 hostname
 date
@@ -40,6 +43,6 @@ do
     SIZE=$(python /usr/local/bin/get_fragment_length.py ${LINE}/abundance.h5)
     # Make file list
     echo "Working on $COUNT of $END Sample ID: $LINE, insert size is: $SIZE"
-    echo "$CMD $SIZE --fasta Homo_sapiens.GRCh38.cdna.all.fa --gtf Homo_sapiens.GRCh38.89.gtf --output ${LINE}_fusion_GRCh38 ${LINE}/fusion.txt" >> $OUTPUT
+    echo "$CMD $SIZE --fasta Homo_sapiens.GRCh38.cdna.all.fa --gtf Homo_sapiens.GRCh38.89.gtf --output ${LINE}_fusion_GRCh38 ${LINE}/fusion.txt; python $SCRIPT_PATH/flatten_json.py ${LINE}_fusion_GRCh38.json ${LINE}_fusion_GRCh38_flattened.txt" >> $OUTPUT
     ((COUNT++))
 done
