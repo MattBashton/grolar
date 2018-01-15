@@ -16,7 +16,7 @@ Having made such a file you can create a job lists for GNU parallel like so:
 
 ```
 Make_job_list_kallisto.sh sample_list.txt kallisto_jobs
-Make_run_list_pizzly.sh sample_list.txt pizzly_jobs
+Make_job_list_pizzly.sh sample_list.txt pizzly_jobs
 ```
 
 Each of these lists can then be run with GNU parallel like so:
