@@ -52,6 +52,9 @@ GetFusionz <- function(sample, suffix) {
   cat("Sorting by number of events\n")
   idx <- order(JSON_level1$splitcount, JSON_level1$paircount, decreasing = TRUE)
   output <- JSON_level1[idx,]
+  # Clean up IDs
+  output$geneA.id <- gsub(".\\d+$", "", output$geneA.id, perl = TRUE)
+  output$geneB.id <- gsub(".\\d+$", "", output$geneB.id, perl = TRUE)
   cat(paste0("Writing out table: ", sample, "_fusions_filt_sorted.txt", "\n"))
   write.table(output[,c(-3,-4)], file = paste0(sample, "_fusions_filt_sorted.txt"), quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
   cat("\n")
@@ -81,6 +84,10 @@ GetFusionz_and_namez <- function(sample, suffix) {
   # Drop weird cols
   output <- output[,c(-3,-4)]
 
+  # Clean up IDs
+  output$geneA.id <- gsub(".\\d+$", "", output$geneA.id, perl = TRUE)
+  output$geneB.id <- gsub(".\\d+$", "", output$geneB.id, perl = TRUE)
+  
   # Add uniq-key
   output <- cbind(rownames(output), output)
   tmp <- colnames(output)[-1]
