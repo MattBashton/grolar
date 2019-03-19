@@ -4,12 +4,13 @@
 # CRAN
 #install.packages("jsonlite")
 #install.packages("dplyr")
+#install.packages("BiocManager")
 
 # Bioconductor
-source("https://bioconductor.org/biocLite.R")
-biocLite()
-#biocLite("ensembldb")
-#biocLite("EnsDb.Hsapiens.v86")
+library(BiocManager)
+BiocManager()
+#BiocManager::install("ensembldb")
+#BiocManager::install("EnsDb.Hsapiens.v86")
 
 # Set up
 # Change to your own output location
