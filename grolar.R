@@ -1,20 +1,20 @@
-# Matthew Bashton 2017
+# Matthew Bashton 2017-2019
 # Load JSON output from pizzly add in gene co-ordinates + compute distance when on same chr
 
 # CRAN
 #install.packages("jsonlite")
 #install.packages("dplyr")
-#install.packages("BiocManager")
 
 # Bioconductor
-library(BiocManager)
-BiocManager()
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install()
 #BiocManager::install("ensembldb")
 #BiocManager::install("EnsDb.Hsapiens.v86")
 
 # Set up
 # Change to your own output location
-setwd("~/RNA_Seq/")
+setwd("~/RNA_Seq")
 
 # CRAN libs
 library(jsonlite)
@@ -31,7 +31,7 @@ supportedFilters(edb)
 suffix <- "_fusion_GRCh38.json"
 
 # Lets get a list of all the files we want to process
-JSON_files <- list.files(path = "~/RNA_Seq/", pattern = paste0("*",suffix))
+JSON_files <- list.files(path = getwd(), pattern = paste0("*",suffix))
 
 # Make a list of Ids
 Ids <- gsub(suffix, "", JSON_files)
@@ -71,7 +71,7 @@ GetFusionz <- function(sample, suffix) {
 GetFusionz_and_namez <- function(sample, suffix) {
 
   # To test
-  #sample <- Ids[1]
+  #sample <- Ids[7]
   #suffix = "_fusion_GRCh38.json"
 
   JSON_file <- paste0(sample, suffix)
@@ -88,7 +88,7 @@ GetFusionz_and_namez <- function(sample, suffix) {
   # Clean up IDs
   output$geneA.id <- gsub(".\\d+$", "", output$geneA.id, perl = TRUE)
   output$geneB.id <- gsub(".\\d+$", "", output$geneB.id, perl = TRUE)
-  
+
   # Add uniq-key
   output <- cbind(rownames(output), output)
   tmp <- colnames(output)[-1]
@@ -139,6 +139,7 @@ GetFusionz_and_namez <- function(sample, suffix) {
   output <- mutate(output, same_chr = super_identical(output$geneA.seq_name,output$geneB.seq_name))
   identical_idx <- which(output$same_chr == TRUE)
 
+
   # New function for getting distance
   GetDistance <- function(RowIdx, dat) {
     OurRow <- dat[RowIdx,]
@@ -160,10 +161,15 @@ GetFusionz_and_namez <- function(sample, suffix) {
   #GetDistance(476, output)
   #GetDistance(5916, output)
 
-  # Get distances
-  cat("Computing gene distances\n")
-  geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
-  output[identical_idx,"gene_distance"] <- geneDistance
+  # Only run if our index has at least one TRUE value
+  if(sum(identical_idx)) {
+
+    # Get distances
+    cat("Computing gene distances\n")
+    geneDistance <- sapply(identical_idx, function(x) GetDistance(x, output))
+    output[identical_idx,"gene_distance"] <- geneDistance
+
+  }
 
   # Sort by splitcount then paircount
   cat("Sorting by number of events\n")
