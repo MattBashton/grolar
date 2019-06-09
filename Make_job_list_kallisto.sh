@@ -27,7 +27,7 @@ echo " * Output job list for GNU parallel saved to: $OUTPUT"
 echo " "
 
 # Main bit of command-line for job
-CMD="kallisto quant -i GRCh38v89.idx --bias --fusion --fr-stranded -t 1"
+CMD="kallisto quant -i GRCh38v89.idx --bias --fusion --rf-stranded -t 1"
 
 # Main Loop
 [ -e $OUTPUT ] && rm $OUTPUT
