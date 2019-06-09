@@ -36,6 +36,6 @@ do
     LINE=( $(awk "NR==$COUNT" $INPUT_LIST) )
     # Make file list
     echo "Working on $COUNT of $END Sample ID: ${LINE[0]}, Files ${LINE[@]:1}"
-    echo "$CMD -o ${LINE[0]} ${LINE[@]:1}" >> $OUTPUT
+    echo "$CMD -o ${LINE[0]} ${LINE[@]:1} 2>&1 | tee ${LINE[0]}.kalliso.out" >> $OUTPUT
     ((COUNT++))
 done
